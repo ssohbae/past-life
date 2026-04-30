@@ -542,8 +542,60 @@ const JOBS = (function() {
     hwaJobs.push({ name: r.name, emoji: r.emoji, desc: r.base + ' ' + v.extra, traits: v.traits, comfort: v.comfort });
   }
 
-  const out = { 목: mokJobs, 화: hwaJobs };
-  ['토','금','수'].forEach(e => { out[e] = out['목']; });
+  const TR = [
+    { name:'왕의 조언자', emoji:'🤝', base:'왕 곁에서 갈등을 중재하고 모두가 수긍할 해답을 찾아내는' },
+    { name:'씨족 어른', emoji:'🏡', base:'들판 공동체의 분쟁을 품고 화합을 이끌어내는' },
+    { name:'항구 중개상', emoji:'⚓', base:'바다와 육지 사이에서 거래를 중재하고 이익을 나누는' },
+    { name:'궁중 외교관', emoji:'📜', base:'왕국 간 대화를 이어 붙이고 평화를 설계하는' },
+    { name:'토기 장인', emoji:'🏺', base:'들판의 흙을 빚어 쓸모 있는 그릇과 안정을 만드는' },
+    { name:'선원 식량 관리자', emoji:'🍱', base:'먼 항해에서 모두가 굶지 않도록 자원을 배분하는' },
+    { name:'왕실 조산사', emoji:'🌱', base:'왕궁 안에서 새 생명을 받아내고 어머니를 돌보는' },
+    { name:'마을 이장', emoji:'🌾', base:'들판 마을의 크고 작은 일을 묵묵히 떠맡아 이끄는' },
+    { name:'섬 중재자', emoji:'🏝️', base:'고립된 섬 공동체 안에서 신뢰를 쌓고 갈등을 녹이는' },
+  ];
+  const TV = [
+    { extra:'게으름조차 포용력으로 승화시키는', traits:'느긋함·포용', comfort:'쉬어도 괜찮다고 말해주는 당신 곁에 모두가 모인다' },
+    { extra:'완벽하지 않아도 안심시키는', traits:'수용·안정', comfort:'부족한 것도 품어버리는 당신의 넓은 품이 사람을 살린다' },
+    { extra:'충동적 순간에도 중심을 잃지 않는', traits:'중심·균형', comfort:'흔들릴 때 당신이 있어 다들 넘어지지 않았다' },
+    { extra:'바쁜 와중에도 돌봄을 잊지 않는', traits:'양육·성실', comfort:'늘 챙겨주는 당신 덕분에 주변이 따뜻하다' },
+    { extra:'멍한 듯 보이지만 모든 것을 기억하는', traits:'관찰·신뢰', comfort:'조용히 곁에 있어 주는 것만으로도 힘이 된다' },
+    { extra:'예민함을 감각으로 바꾸어 돌보는', traits:'감수성·보살핌', comfort:'섬세한 당신의 눈길이 닿는 곳마다 꽃이 핀다' },
+    { extra:'먹는 것으로 사람을 연결하는', traits:'환대·나눔', comfort:'밥 한 끼 같이 먹자는 말이 세상에서 제일 따뜻한 위로다' },
+    { extra:'잠으로 에너지를 회복해 더 단단히 버티는', traits:'회복력·인내', comfort:'쉬고 나면 더 강해지는 당신은 뿌리 깊은 나무 같다' },
+    { extra:'청소하듯 문제를 정리하고 판을 새로 까는', traits:'정돈·재정비', comfort:'어지러운 상황을 조용히 정리하는 당신이 있어 다시 시작할 수 있다' },
+    { extra:'돈보다 관계를 먼저 챙기는', traits:'의리·공동체', comfort:'이익보다 사람을 택하는 당신 주변에 진짜가 남는다' },
+    { extra:'자유 속에서도 책임을 다하는', traits:'자율·성숙', comfort:'묶이지 않아도 제자리를 지키는 당신은 진짜 어른이다' },
+    { extra:'사람 사이를 이어주는 다리가 되는', traits:'연결·배려', comfort:'당신이 있으면 모르는 사람도 금세 한 식구가 된다' },
+    { extra:'게으름과 완벽주의 사이에서 균형을 잡는', traits:'실용·중용', comfort:'너무 많이도 너무 적게도 아닌, 딱 맞는 당신이 있어 다행이다' },
+    { extra:'완벽을 추구하되 타인에게 강요하지 않는', traits:'성실·존중', comfort:'스스로에겐 엄격하고 남에겐 너그러운 당신을 닮고 싶다' },
+    { extra:'충동과 신중함 사이에서 타이밍을 읽는', traits:'직감·조율', comfort:'느낌으로 결정해도 결국 맞아떨어지는 당신의 감각이 부럽다' },
+    { extra:'왕 곁에서 실리를 챙기는 조력자가 된', traits:'지략·안정', comfort:'뒤에서 밀어주는 당신 덕분에 앞사람이 빛난다' },
+    { extra:'들판에서 뿌리를 내리고 삶을 일군', traits:'근면·대지', comfort:'조용히 땅을 일구는 당신의 손에서 모든 것이 자란다' },
+    { extra:'바다 위에서도 평정심을 잃지 않은', traits:'침착·포용', comfort:'흔들리는 배 위에서도 태연한 당신이 모두의 닻이 된다' },
+    { extra:'돈과 사람을 함께 붙잡는', traits:'현실·따뜻함', comfort:'실리와 정을 동시에 챙기는 당신은 진정한 생활의 달인이다' },
+    { extra:'자유를 나누어 공동체에 숨통을 트이게 하는', traits:'해방·나눔', comfort:'당신이 "괜찮아"라고 말해주면 정말로 괜찮아진다' },
+    { extra:'사람과 사람 사이의 오해를 녹이는', traits:'소통·중재', comfort:'갈등이 생겨도 당신이 끼어들면 웃음으로 끝난다' },
+    { extra:'게으름 속에서도 꼭 필요한 것만 지키는', traits:'선택적집중·핵심', comfort:'쓸데없이 바쁘지 않은 당신이 결국 가장 중요한 것을 지킨다' },
+    { extra:'완벽함을 대지처럼 묵묵히 쌓아가는', traits:'인내·축적', comfort:'오래 걸려도 당신이 만든 것은 무너지지 않는다' },
+    { extra:'충동을 창의력으로 전환하는', traits:'창조·변화', comfort:'즉흥적인 당신의 아이디어가 세상을 새롭게 만든다' },
+    { extra:'밥상을 차려 마음을 잇는', traits:'양육·연대', comfort:'맛있는 것을 나누는 당신의 식탁은 세상에서 제일 따뜻한 공간이다' },
+    { extra:'잠에서 깨어나 늘 새출발하는', traits:'재생·희망', comfort:'다시 일어나는 당신의 모습이 주변 사람들에게 용기가 된다' },
+    { extra:'정리하는 손길로 모두에게 쉼터를 주는', traits:'정돈·안식', comfort:'당신이 다녀간 자리는 항상 더 편안하고 따뜻해진다' },
+  ];
+  const toJobs = [];
+  for (let idx = 0; idx < 243; idx++) {
+    const c0 = Math.floor(idx / 81);
+    const c1 = Math.floor((idx % 81) / 27);
+    const c2 = Math.floor((idx % 27) / 9);
+    const c3 = Math.floor((idx % 9) / 3);
+    const c4 = idx % 3;
+    const r = TR[c0 * 3 + c4];
+    const v = TV[c1 * 9 + c2 * 3 + c3];
+    toJobs.push({ name: r.name, emoji: r.emoji, desc: r.base + ' ' + v.extra, traits: v.traits, comfort: v.comfort });
+  }
+
+  const out = { 목: mokJobs, 화: hwaJobs, 토: toJobs };
+  ['금','수'].forEach(e => { out[e] = out['목']; });
   return out;
 })();
 
