@@ -646,8 +646,59 @@ const JOBS = (function() {
     geumJobs.push({ name: r.name, emoji: r.emoji, desc: r.base + ' ' + v.extra, traits: v.traits, comfort: v.comfort });
   }
 
-  const out = { 목: mokJobs, 화: hwaJobs, 토: toJobs, 금: geumJobs };
-  ['수'].forEach(e => { out[e] = out['목']; });
+  const SR = [
+    { name:'왕의 책사', emoji:'📚', base:'왕궁에서 깊은 지혜와 통찰로 전략을 설계하는' },
+    { name:'들판의 점술사', emoji:'🔮', base:'들판에서 자연의 흐름을 읽고 앞날을 내다보는' },
+    { name:'바다의 길잡이', emoji:'🌊', base:'별과 파도를 읽어 어둠 속에서도 항로를 찾아주는' },
+    { name:'궁중 학자', emoji:'🖋️', base:'왕궁 서고에서 지식의 깊이를 탐구하고 지혜를 쌓는' },
+    { name:'떠돌이 철학자', emoji:'🌿', base:'들판을 유랑하며 삶의 근원을 탐구하는' },
+    { name:'심해 탐험가', emoji:'🐚', base:'아무도 가지 않은 바다 깊이를 홀로 탐색하는' },
+    { name:'왕실 점성술사', emoji:'✨', base:'별자리의 흐름으로 왕국의 운명을 해석하는' },
+    { name:'들판의 치유사', emoji:'🌱', base:'자연의 이치와 식물의 기운으로 몸과 마음을 치유하는' },
+    { name:'바다 신화 전승자', emoji:'🐋', base:'바다 깊은 이야기를 품고 다음 세대에 전하는' },
+  ];
+  const SV = [
+    { extra:'게으름 속에서도 깊이 흐르는', traits:'통찰·여유', comfort:'멈춰 있는 것처럼 보여도 당신 안에선 늘 무언가 흐르고 있다' },
+    { extra:'완벽한 지식을 쌓되 가볍게 흘려보낼 줄 아는', traits:'지혜·유연', comfort:'다 알면서도 다 가르치려 하지 않는 당신이 진짜 현자다' },
+    { extra:'충동 속에서도 흐름을 읽는', traits:'직관·탐구', comfort:'순간의 느낌을 믿는 당신의 감각은 웬만한 분석보다 정확하다' },
+    { extra:'자유롭게 흘러 어디든 스며드는', traits:'자유·적응', comfort:'틀에 맞추지 않아도 어디서든 자신의 자리를 찾는 당신이 대단하다' },
+    { extra:'자유와 깊이를 동시에 추구하는', traits:'탐구·독립', comfort:'혼자서도 충분히 깊어지는 당신의 내면이 우주처럼 넓다' },
+    { extra:'자유롭게 변화하며 본질에 다가가는', traits:'변화·신비', comfort:'흘러가면서도 잃지 않는 것이 있는 당신은 강처럼 자유롭다' },
+    { extra:'사람의 마음 깊이를 꿰뚫는', traits:'공감·통찰', comfort:'말하지 않아도 아는 당신 곁에 있으면 이상하게 편안해진다' },
+    { extra:'사람의 복잡함을 있는 그대로 받아들이는', traits:'포용·깊이', comfort:'판단하지 않고 들어주는 당신이 세상에서 가장 좋은 친구다' },
+    { extra:'충동적인 감정의 흐름에 의미를 부여하는', traits:'감수성·해석', comfort:'당신의 감정은 센서다 — 거짓말을 하지 않는다' },
+    { extra:'조용히 흐르며 모든 것을 흡수하는', traits:'관찰·흡수', comfort:'말없이 스펀지처럼 세상을 빨아들이는 당신에게 빈 공간은 없다' },
+    { extra:'느리게 흐르지만 결국 바다에 닿는', traits:'인내·목적', comfort:'느려도 멈추지 않는 당신은 반드시 원하는 곳에 도달한다' },
+    { extra:'충동을 흘려보내며 중심을 지키는', traits:'자제·균형', comfort:'휩쓸릴 것 같아도 결국 자신의 자리로 돌아오는 당신이 믿음직하다' },
+    { extra:'자유로이 흘러 새로운 길을 여는', traits:'개척·유연', comfort:'가보지 않은 길을 먼저 가는 당신 덕분에 세상이 넓어진다' },
+    { extra:'깊은 곳에서 자유를 찾는', traits:'탐구·해방', comfort:'표면이 아닌 심연을 보는 당신의 눈이 특별하다' },
+    { extra:'충동적으로 뛰어들어 새 세계를 발견하는', traits:'도전·발견', comfort:'두려움 없이 뛰어드는 당신이 남들이 못 보는 것을 본다' },
+    { extra:'사람 사이의 보이지 않는 연결을 읽는', traits:'연결·신비', comfort:'인연의 실을 보는 당신 덕분에 만남이 더 특별해진다' },
+    { extra:'사람의 말 너머를 듣는', traits:'경청·깊이', comfort:'침묵 속에서도 당신은 다 알고 있다 — 그래서 당신 곁이 편하다' },
+    { extra:'충동적 감정을 지혜로 정제하는', traits:'성숙·통찰', comfort:'아프게 느끼는 만큼 깊어지는 당신이 결국 가장 단단해진다' },
+    { extra:'불필요한 것을 흘려보내고 본질만 남기는', traits:'정화·핵심', comfort:'복잡한 것을 단순하게 만드는 당신의 눈이 날카롭다' },
+    { extra:'완벽하게 정제된 지식으로 세상을 밝히는', traits:'학문·완성', comfort:'당신이 정리한 것은 다른 사람의 지도가 된다' },
+    { extra:'즉흥적으로 깨달음을 정리하는', traits:'창의·기록', comfort:'갑자기 찾아온 영감을 놓치지 않는 당신의 손이 부지런하다' },
+    { extra:'자유롭게 흐르며 정체된 것을 녹이는', traits:'변화·해소', comfort:'막힌 곳을 조용히 뚫어주는 당신이 있어 다시 흐를 수 있다' },
+    { extra:'완벽히 정화된 흐름을 설계하는', traits:'구조·정화', comfort:'막힘 없이 흐르도록 판을 짜는 당신의 설계가 아름답다' },
+    { extra:'충동적 변화로 새로운 흐름을 만드는', traits:'혁신·흐름', comfort:'당신이 뒤흔들고 나면 세상이 더 나은 방향으로 흐른다' },
+    { extra:'사람의 상처를 조용히 씻겨주는', traits:'치유·공감', comfort:'당신 곁에 있으면 이상하게 마음이 가벼워진다' },
+    { extra:'관계의 탁한 것을 걸러내는', traits:'정화·지혜', comfort:'진흙탕 속에서도 맑음을 찾아내는 당신이 귀하다' },
+    { extra:'충동적 결별조차 새로운 흐름의 시작으로 만드는', traits:'전환·재생', comfort:'끝이 아니라 방향 전환임을 아는 당신은 언제나 다시 흐른다' },
+  ];
+  const suJobs = [];
+  for (let idx = 0; idx < 243; idx++) {
+    const c0 = Math.floor(idx / 81);
+    const c1 = Math.floor((idx % 81) / 27);
+    const c2 = Math.floor((idx % 27) / 9);
+    const c3 = Math.floor((idx % 9) / 3);
+    const c4 = idx % 3;
+    const r = SR[c0 * 3 + c4];
+    const v = SV[c1 * 9 + c2 * 3 + c3];
+    suJobs.push({ name: r.name, emoji: r.emoji, desc: r.base + ' ' + v.extra, traits: v.traits, comfort: v.comfort });
+  }
+
+  const out = { 목: mokJobs, 화: hwaJobs, 토: toJobs, 금: geumJobs, 수: suJobs };
   return out;
 })();
 
