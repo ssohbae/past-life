@@ -216,6 +216,15 @@
   }
   .job-link::before { content: "🌳"; flex-shrink: 0; font-size: 14px; }
 
+  .intro-disclaimer { display: block; font-size: 11px; color: rgba(224,234,206,0.3); margin-top: 8px; letter-spacing: 0.02em; }
+
+  .cal-toggle { display: flex; gap: 8px; margin-bottom: 14px; }
+  .cal-btn { flex: 1; padding: 11px; border: 2px solid rgba(255,255,255,0.1); border-radius: 12px; background: rgba(255,255,255,0.05); color: rgba(224,234,206,0.45); font-family: 'Pretendard', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .cal-btn.active { border-color: #5A9648; background: #2C5C24; color: #C4E898; }
+  .leap-row { display: none; align-items: center; gap: 10px; margin-bottom: 14px; font-size: 13px; color: rgba(224,234,206,0.55); cursor: pointer; }
+  .leap-row.show { display: flex; }
+  .leap-row input[type="checkbox"] { width: 17px; height: 17px; accent-color: #5A9648; cursor: pointer; flex-shrink: 0; }
+
   @media (max-width: 360px) {
     .dob-row { gap: 6px; }
     .result-name { font-size: 26px; }
@@ -239,7 +248,7 @@
       <span class="intro-emoji">🔮</span>
       <div class="intro-kicker">운명의 숲 PRESENTS</div>
       <h1 class="intro-title">나의 전생<br/>직업은?</h1>
-      <p class="intro-sub">5가지 질문 + 생년월일 일간으로<br/>당신의 전생을 밝혀드립니다. 과학적 근거는 전혀 없음!</p>
+      <p class="intro-sub">5가지 질문 + 생년월일 일간으로<br/>당신의 전생을 밝혀드립니다.<span class="intro-disclaimer">* 과학적 근거는 전혀 없음</span></p>
       <div class="intro-chips">
         <span class="intro-chip">🎭 60가지 직업</span>
         <span class="intro-chip">⏱️ 1분 소요</span>
@@ -257,7 +266,15 @@
   <div class="screen" id="s-dob">
     <button class="btn-back" onclick="go('s-intro')">← 뒤로</button>
     <h2 class="screen-title">생년월일을 알려주세요</h2>
-    <p class="screen-sub">만세력으로 일간을 계산해 전생 직업을 더 정밀하게 찾아드려요.</p>
+    <p class="screen-sub">만세력으로 일간(日干)을 계산해 당신의 전생을 더욱 정밀하게 읽어드립니다.</p>
+    <div class="cal-toggle">
+      <button class="cal-btn active" id="btn-solar" onclick="setCalType('solar')">양력</button>
+      <button class="cal-btn" id="btn-lunar" onclick="setCalType('lunar')">음력</button>
+    </div>
+    <label class="leap-row" id="leap-wrap">
+      <input type="checkbox" id="chk-leap">
+      윤달
+    </label>
     <div class="dob-row">
       <div class="dob-col wide">
         <select class="dob-select" id="sel-y"><option value="">연도 선택</option></select>
@@ -345,47 +362,46 @@ const QUESTIONS = [
   {
     text: "지금 나는?",
     choices: [
-      { e:"🏃",   label:"바쁘다",   cat:"royal",    pts:2, cat2:"artisan",   pts2:1 },
-      { e:"😶‍🌫️", label:"멍하다",   cat:"scholar",  pts:2, cat2:"mystic",    pts2:1 },
-      { e:"😤",   label:"예민하다", cat:"mystic",   pts:3 },
-      { e:"🥳",   label:"신남",     cat:"wanderer", pts:2, cat2:"trickster", pts2:1 },
+      { e:"🏃",   label:"바쁘다",   cat:"royal",    pts:5, cat2:"artisan",   pts2:1, vid:0 },
+      { e:"😶‍🌫️", label:"멍하다",   cat:"scholar",  pts:5, cat2:"mystic",    pts2:1, vid:1 },
+      { e:"😤",   label:"예민하다", cat:"mystic",   pts:5, cat2:"trickster", pts2:1, vid:2 },
+      { e:"🥳",   label:"신남",     cat:"wanderer", pts:5, cat2:"trickster", pts2:1, vid:1 },
     ]
   },
   {
     text: "스트레스받을 때 나는?",
     choices: [
-      { e:"🍔", label:"먹는다",              cat:"artisan",   pts:3 },
-      { e:"😴", label:"잔다",                cat:"scholar",   pts:2, cat2:"mystic",    pts2:1 },
-      { e:"🧹", label:"청소한다",            cat:"royal",     pts:2, cat2:"artisan",   pts2:1 },
-      { e:"📞", label:"누군가한테 전화한다", cat:"trickster", pts:3 },
+      { e:"🍔", label:"먹는다",              cat:"artisan",   pts:5, cat2:"trickster", pts2:1, vid:2 },
+      { e:"😴", label:"잔다",                cat:"scholar",   pts:5, cat2:"mystic",    pts2:1, vid:0 },
+      { e:"🧹", label:"청소한다",            cat:"royal",     pts:5, cat2:"scholar",   pts2:1, vid:1 },
+      { e:"📞", label:"누군가한테 전화한다", cat:"trickster", pts:5, cat2:"artisan",   pts2:1, vid:2 },
     ]
   },
   {
     text: "내 인생 키워드는?",
     choices: [
-      { e:"💰", label:"돈",   cat:"royal",    pts:3 },
-      { e:"🌈", label:"자유", cat:"wanderer", pts:3 },
-      { e:"🤝", label:"사람", cat:"artisan",  pts:2, cat2:"trickster", pts2:1 },
-      { e:"🏆", label:"명예", cat:"scholar",  pts:2, cat2:"mystic",    pts2:1 },
+      { e:"💰", label:"돈",   cat:"royal",    pts:5, cat2:"trickster", pts2:1, vid:0 },
+      { e:"🌈", label:"자유", cat:"wanderer", pts:5, cat2:"mystic",    pts2:1, vid:2 },
+      { e:"🤝", label:"사람", cat:"artisan",  pts:5, cat2:"wanderer",  pts2:1, vid:1 },
+      { e:"🏆", label:"명예", cat:"scholar",  pts:5, cat2:"royal",     pts2:1, vid:0 },
     ]
   },
   {
-    // sub 0=게으름/1=완벽주의 → variantIdx 0, sub 2=충동적/3=감수성과잉 → variantIdx 1
     text: "나의 치명적 단점은?",
     choices: [
-      { e:"🛋️", label:"게으름",      cat:"wanderer",  pts:2, cat2:"scholar",   pts2:1, sub:0 },
-      { e:"🔍", label:"완벽주의",    cat:"royal",     pts:2, cat2:"scholar",   pts2:1, sub:1 },
-      { e:"💥", label:"충동적",      cat:"trickster", pts:2, cat2:"wanderer",  pts2:1, sub:2 },
-      { e:"🌊", label:"감수성 과잉", cat:"mystic",    pts:3,                           sub:3 },
+      { e:"🛋️", label:"게으름",      cat:"wanderer",  pts:5, cat2:"artisan",  pts2:1, vid:1 },
+      { e:"🔍", label:"완벽주의",    cat:"royal",     pts:5, cat2:"scholar",  pts2:1, vid:2 },
+      { e:"💥", label:"충동적",      cat:"trickster", pts:5, cat2:"wanderer", pts2:1, vid:0 },
+      { e:"🌊", label:"감수성 과잉", cat:"mystic",    pts:5, cat2:"scholar",  pts2:1, vid:2 },
     ]
   },
   {
     text: "전생에서 나는?",
     choices: [
-      { e:"👑",  label:"왕 옆에 있었을 것 같다",      cat:"royal",     pts:3 },
-      { e:"🌾",  label:"들판에 있었을 것 같다",        cat:"artisan",   pts:2, cat2:"wanderer", pts2:1 },
-      { e:"⛵",  label:"바다 위에 있었을 것 같다",     cat:"wanderer",  pts:3 },
-      { e:"🏙️", label:"도시 한복판에 있었을 것 같다", cat:"trickster", pts:2, cat2:"artisan",  pts2:1 },
+      { e:"👑",  label:"왕 옆에 있었을 것 같다",      cat:"royal",     pts:5, cat2:"scholar",  pts2:1, vid:1 },
+      { e:"🌾",  label:"들판에 있었을 것 같다",        cat:"artisan",   pts:5, cat2:"wanderer", pts2:1, vid:0 },
+      { e:"⛵",  label:"바다 위에 있었을 것 같다",     cat:"wanderer",  pts:5, cat2:"mystic",   pts2:1, vid:2 },
+      { e:"🏙️", label:"도시 한복판에 있었을 것 같다", cat:"trickster", pts:5, cat2:"artisan",  pts2:1, vid:1 },
     ]
   },
 ];
@@ -1138,6 +1154,7 @@ const LOADING_STEPS = [
 // 상태
 // ────────────────────────────────────────────────
 let dobStr = '';
+let calType = 'solar';
 let answers = [];
 let currentQ = 0;
 
@@ -1166,6 +1183,13 @@ function go(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function setCalType(type) {
+  calType = type;
+  document.getElementById('btn-solar').classList.toggle('active', type === 'solar');
+  document.getElementById('btn-lunar').classList.toggle('active', type === 'lunar');
+  document.getElementById('leap-wrap').classList.toggle('show', type === 'lunar');
 }
 
 // ────────────────────────────────────────────────
@@ -1222,8 +1246,8 @@ function calcResult() {
     return best;
   });
 
-  const subIdx = answers[3].sub;
-  const variantIdx = subIdx === 0 ? 0 : subIdx === 1 ? 1 : 2;
+  const vidSum = answers.reduce((sum, a) => sum + a.vid, 0);
+  const variantIdx = vidSum % 3;
 
   const [y, m, d] = dobStr.split('-').map(Number);
   const element = getElement(y, m, d);
@@ -1249,7 +1273,18 @@ function startQuiz() {
   err.classList.remove('show');
   document.querySelectorAll('.dob-select').forEach(el => el.classList.remove('error'));
 
-  dobStr = `${y}-${m}-${d}`;
+  if (calType === 'lunar') {
+    const isLeap = document.getElementById('chk-leap').checked;
+    try {
+      const lunar = Lunar.fromYmd(Number(y), Number(m), Number(d), isLeap);
+      const solar = lunar.getSolar();
+      dobStr = `${solar.getYear()}-${String(solar.getMonth()).padStart(2,'0')}-${String(solar.getDay()).padStart(2,'0')}`;
+    } catch(e) {
+      dobStr = `${y}-${m}-${d}`;
+    }
+  } else {
+    dobStr = `${y}-${m}-${d}`;
+  }
   answers = [];
   currentQ = 0;
   renderQ();
