@@ -921,7 +921,8 @@ function showResult() {
 
   const traitsEl = document.getElementById('r-traits');
   traitsEl.innerHTML = '';
-  job.traits.forEach(t => {
+  const traitsArr = Array.isArray(job.traits) ? job.traits : job.traits.split('·');
+  traitsArr.forEach(t => {
     const sp = document.createElement('span');
     sp.className = 'trait';
     sp.textContent = t;
