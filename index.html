@@ -196,14 +196,23 @@
 
   /* 푸터 */
   .footer-block { text-align: center; padding: 8px 0 20px; }
+  .footer-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 12px; }
   .btn-coffee {
     display: inline-flex; align-items: center; gap: 7px; padding: 12px 22px;
     background: #C8A040; color: #1a1a1a; border: none; border-radius: 99px;
     font-size: 14px; font-weight: 700; font-family: 'Pretendard', sans-serif;
-    cursor: pointer; text-decoration: none; transition: transform 0.15s; margin-bottom: 12px;
+    cursor: pointer; text-decoration: none; transition: transform 0.15s;
     box-shadow: 0 4px 16px rgba(180,140,40,0.4);
   }
   .btn-coffee:hover { transform: translateY(-2px); }
+  .btn-kakao {
+    display: inline-flex; align-items: center; gap: 7px; padding: 12px 22px;
+    background: #FEE500; color: #191919; border: none; border-radius: 99px;
+    font-size: 14px; font-weight: 700; font-family: 'Pretendard', sans-serif;
+    cursor: pointer; text-decoration: none; transition: transform 0.15s;
+    box-shadow: 0 4px 16px rgba(254,229,0,0.4);
+  }
+  .btn-kakao:hover { transform: translateY(-2px); }
   .footer-fine { font-size: 12px; color: rgba(224,234,206,0.18); }
 
   /* 일간 연결 설명 */
@@ -257,7 +266,10 @@
       <button class="btn-primary" onclick="go('s-dob')">전생 확인하러 가기 →</button>
     </div>
     <div class="footer-block" style="margin-top:44px">
-      <a class="btn-coffee" href="https://buymeacoffee.com" target="_blank">☕ Buy me a coffee</a>
+      <div class="footer-btns">
+        <a class="btn-coffee" href="https://buymeacoffee.com" target="_blank">☕ Buy me a coffee</a>
+        <a class="btn-kakao" href="http://pf.kakao.com/_CweTX" target="_blank">💬 현생 사주 상담받기</a>
+      </div>
       <p class="footer-fine">© 2026 운명의 숲. All rights reserved.</p>
     </div>
   </div>
@@ -347,7 +359,10 @@
       <button class="btn-action" onclick="retry()">🔄 다시 하기</button>
     </div>
     <div class="footer-block">
-      <a class="btn-coffee" href="https://buymeacoffee.com" target="_blank">☕ Buy me a coffee</a>
+      <div class="footer-btns">
+        <a class="btn-coffee" href="https://buymeacoffee.com" target="_blank">☕ Buy me a coffee</a>
+        <a class="btn-kakao" href="http://pf.kakao.com/_CweTX" target="_blank">💬 현생 사주 상담받기</a>
+      </div>
       <p class="footer-fine">© 2026 운명의 숲. All rights reserved.</p>
     </div>
   </div>
