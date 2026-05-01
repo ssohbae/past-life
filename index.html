@@ -21,17 +21,19 @@
 
   body {
     font-family: 'Pretendard', -apple-system, sans-serif;
-    background: #0E1A0D;
+    background: linear-gradient(160deg, #07111E 0%, #0C1F0E 45%, #091820 100%);
     min-height: 100vh;
     color: #E0EACE;
     overflow-x: hidden;
   }
 
   .bg-blobs { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-  .blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.4; }
-  .blob-1 { width: 460px; height: 460px; background: #1A4A16; top: -100px; left: -100px; }
-  .blob-2 { width: 380px; height: 380px; background: #274E18; bottom: 80px; right: -80px; }
-  .blob-3 { width: 300px; height: 300px; background: #123A10; top: 45%; left: 50%; transform: translateX(-50%); }
+  #stars-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .blob { position: absolute; border-radius: 50%; filter: blur(100px); }
+  .blob-1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(40,120,30,0.45) 0%, transparent 70%); top: -120px; left: -120px; }
+  .blob-2 { width: 420px; height: 420px; background: radial-gradient(circle, rgba(20,80,120,0.35) 0%, transparent 70%); bottom: 60px; right: -100px; }
+  .blob-3 { width: 340px; height: 340px; background: radial-gradient(circle, rgba(100,60,160,0.22) 0%, transparent 70%); top: 42%; left: 50%; transform: translateX(-50%); }
+  .blob-4 { width: 260px; height: 260px; background: radial-gradient(circle, rgba(180,130,20,0.18) 0%, transparent 70%); top: 20%; right: -60px; }
 
   .app {
     position: relative;
@@ -49,22 +51,32 @@
   .intro-hero { text-align: center; padding-top: 32px; }
   .intro-emoji { font-size: 88px; display: block; margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
   @keyframes float { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-12px) rotate(5deg); } }
-  .intro-kicker { display: inline-block; background: #244E1C; color: #B0D880; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; padding: 4px 14px; border-radius: 99px; margin-bottom: 16px; border: 1px solid rgba(176,216,128,0.3); }
-  .intro-title { font-family: 'Nanum Myeongjo', serif; font-size: clamp(28px,7vw,38px); font-weight: 700; line-height: 1.25; margin-bottom: 14px; color: #EAF4D8; }
+  .intro-kicker { display: inline-block; background: rgba(180,140,40,0.15); color: rgba(220,190,100,0.9); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; padding: 4px 14px; border-radius: 99px; margin-bottom: 16px; border: 1px solid rgba(200,160,60,0.35); }
+  .intro-title {
+    font-family: 'Nanum Myeongjo', serif; font-size: clamp(28px,7vw,38px); font-weight: 700; line-height: 1.25; margin-bottom: 14px;
+    background: linear-gradient(135deg, #E8D4A0 0%, #F5EDD8 45%, #C8A040 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
   .intro-sub { font-size: 14px; color: rgba(224,234,206,0.55); line-height: 1.85; margin-bottom: 28px; }
   .intro-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 32px; }
-  .intro-chip { background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.12); padding: 6px 14px; border-radius: 99px; font-size: 13px; font-weight: 500; color: rgba(224,234,206,0.75); }
+  .intro-chip { background: rgba(255,255,255,0.07); border: 1px solid rgba(200,170,80,0.22); padding: 6px 14px; border-radius: 99px; font-size: 13px; font-weight: 500; color: rgba(224,234,206,0.82); }
 
   /* 공통 버튼 */
   .btn-primary {
     display: block; width: 100%; padding: 17px;
-    background: #2C5C24; color: #C4E898; border: none; border-radius: 16px;
+    background: linear-gradient(135deg, #2A6422 0%, #4A9438 55%, #3A7C2C 100%);
+    color: #D8F0B8; border: none; border-radius: 16px;
     font-size: 16px; font-weight: 700; font-family: 'Pretendard', sans-serif;
-    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
-    box-shadow: 0 4px 20px rgba(0,80,0,0.4);
-    letter-spacing: 0.02em;
+    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 24px rgba(60,140,40,0.38), 0 1px 0 rgba(255,255,255,0.08) inset;
+    letter-spacing: 0.02em; position: relative; overflow: hidden;
   }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,80,0,0.5); background: #366C2A; }
+  .btn-primary::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 60%);
+    border-radius: 16px;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(60,140,40,0.55), 0 0 24px rgba(120,210,80,0.18); }
   .btn-primary:active { transform: scale(0.98); }
   .btn-primary:disabled { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.25); cursor: not-allowed; transform: none; box-shadow: none; }
 
@@ -204,24 +216,26 @@
 
   /* 푸터 */
   .footer-block { text-align: center; padding: 8px 0 20px; }
-  .footer-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 10px; }
+  .footer-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 12px; }
   .btn-coffee {
-    display: inline-flex; align-items: center; gap: 4px; padding: 7px 13px;
-    background: rgba(90,140,90,0.25); color: rgba(176,216,128,0.7);
-    border: 1px solid rgba(90,140,90,0.35); border-radius: 99px;
+    display: inline-flex; align-items: center; gap: 5px; padding: 8px 15px;
+    background: rgba(60,110,55,0.2); color: rgba(160,210,130,0.72);
+    border: 1px solid rgba(80,140,70,0.28); border-radius: 99px;
     font-size: 11px; font-weight: 600; font-family: 'Pretendard', sans-serif;
-    cursor: pointer; text-decoration: none; transition: opacity 0.15s;
+    cursor: pointer; text-decoration: none; transition: all 0.18s;
+    backdrop-filter: blur(4px);
   }
-  .btn-coffee:hover { opacity: 0.8; }
+  .btn-coffee:hover { background: rgba(60,110,55,0.32); color: rgba(180,230,150,0.9); border-color: rgba(80,140,70,0.45); }
   .btn-kakao {
-    display: inline-flex; align-items: center; gap: 4px; padding: 7px 13px;
-    background: rgba(180,160,30,0.2); color: rgba(220,195,80,0.75);
-    border: 1px solid rgba(180,160,30,0.3); border-radius: 99px;
+    display: inline-flex; align-items: center; gap: 5px; padding: 8px 15px;
+    background: rgba(160,130,20,0.18); color: rgba(210,180,70,0.72);
+    border: 1px solid rgba(170,140,30,0.28); border-radius: 99px;
     font-size: 11px; font-weight: 600; font-family: 'Pretendard', sans-serif;
-    cursor: pointer; text-decoration: none; transition: opacity 0.15s;
+    cursor: pointer; text-decoration: none; transition: all 0.18s;
+    backdrop-filter: blur(4px);
   }
-  .btn-kakao:hover { opacity: 0.8; }
-  .footer-fine { font-size: 11px; color: rgba(224,234,206,0.15); }
+  .btn-kakao:hover { background: rgba(160,130,20,0.3); color: rgba(230,200,90,0.9); border-color: rgba(170,140,30,0.45); }
+  .footer-fine { font-size: 11px; color: rgba(224,234,206,0.14); margin-top: 4px; }
 
   /* 일간 연결 설명 */
   .job-link {
@@ -252,9 +266,11 @@
 <body>
 
 <div class="bg-blobs">
+  <canvas id="stars-canvas"></canvas>
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
   <div class="blob blob-3"></div>
+  <div class="blob blob-4"></div>
 </div>
 
 <div class="app" id="app">
@@ -741,6 +757,53 @@ let dobStr = '';
 let calType = 'solar';
 let answers = [];
 let currentQ = 0;
+
+// ────────────────────────────────────────────────
+// 별빛 파티클
+// ────────────────────────────────────────────────
+(function initStars() {
+  const canvas = document.getElementById('stars-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function createStars() {
+    stars = [];
+    const count = Math.floor((canvas.width * canvas.height) / 6000);
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.2 + 0.2,
+        alpha: Math.random() * 0.6 + 0.1,
+        speed: Math.random() * 0.004 + 0.001,
+        phase: Math.random() * Math.PI * 2,
+      });
+    }
+  }
+
+  function draw(t) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+      const a = s.alpha * (0.55 + 0.45 * Math.sin(t * s.speed + s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(220,215,200,${a})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  createStars();
+  window.addEventListener('resize', () => { resize(); createStars(); });
+  requestAnimationFrame(draw);
+})();
 
 // ────────────────────────────────────────────────
 // 초기화
