@@ -23,11 +23,28 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="나의 전생 직업은? 🔮" />
   <meta name="twitter:description" content="5가지 질문 + 생년월일 일간으로 당신의 전생 직업을 밝혀드립니다." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
   <script src="https://cdn.jsdelivr.net/npm/lunar-javascript/lunar.js"></script>
   <style>
+  @font-face {
+    font-family: 'NMMFClassic';
+    font-weight: 300;
+    font-display: swap;
+    src: url('./fonts/국립박물관문화재단클래식L.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'NMMFClassic';
+    font-weight: 500;
+    font-display: swap;
+    src: url('./fonts/국립박물관문화재단클래식M.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'NMMFClassic';
+    font-weight: 700;
+    font-display: swap;
+    src: url('./fonts/국립박물관문화재단클래식B.ttf') format('truetype');
+  }
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
@@ -47,7 +64,7 @@
   }
 
   body {
-    font-family: 'Noto Sans KR', -apple-system, sans-serif;
+    font-family: 'Pretendard', -apple-system, sans-serif;
     background: var(--bg);
     min-height: 100vh;
     color: var(--text);
@@ -74,7 +91,7 @@
   }
 
   .intro-title {
-    font-family: 'Nanum Myeongjo', serif;
+    font-family: 'NMMFClassic', serif;
     font-size: clamp(36px, 9vw, 48px);
     font-weight: 700; line-height: 1.15; margin-bottom: 18px; letter-spacing: -0.03em;
     color: var(--text);
@@ -97,7 +114,7 @@
     display: block; width: 100%; padding: 18px;
     background: var(--teal);
     color: #FFFFFF; border: none; border-radius: 16px;
-    font-size: 16px; font-weight: 700; font-family: 'Noto Sans KR', sans-serif;
+    font-size: 16px; font-weight: 700; font-family: 'Pretendard', sans-serif;
     cursor: pointer; transition: background 0.15s, transform 0.1s;
     letter-spacing: 0.02em;
   }
@@ -109,7 +126,7 @@
 
   .btn-back {
     background: none; border: none; color: var(--muted); font-size: 14px;
-    font-family: 'Noto Sans KR', sans-serif; cursor: pointer;
+    font-family: 'Pretendard', sans-serif; cursor: pointer;
     padding: 24px 0 22px; display: flex; align-items: center; gap: 4px;
   }
   .btn-back:hover { color: var(--sub); }
@@ -129,7 +146,7 @@
 
   .dob-select {
     width: 100%; padding: 15px 8px; border: 1.5px solid var(--border); border-radius: 12px;
-    font-size: 15px; font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px; font-family: 'Pretendard', sans-serif;
     background: var(--bg-card); color: var(--text);
     cursor: pointer; transition: border-color 0.15s;
     appearance: none; text-align: center;
@@ -144,7 +161,7 @@
   .cal-btn {
     flex: 1; padding: 12px; border: 1.5px solid var(--border); border-radius: 12px;
     background: var(--bg-card); color: var(--sub);
-    font-family: 'Noto Sans KR', sans-serif; font-size: 14px; font-weight: 500;
+    font-family: 'Pretendard', sans-serif; font-size: 14px; font-weight: 500;
     cursor: pointer; transition: all 0.15s;
   }
   .cal-btn.active { border-color: var(--teal); background: var(--teal-pale); color: var(--teal-dark); }
@@ -170,7 +187,7 @@
     color: var(--teal); margin-bottom: 10px;
   }
   .q-text {
-    font-family: 'Nanum Myeongjo', serif; font-size: 22px; font-weight: 700;
+    font-family: 'NMMFClassic', serif; font-size: 22px; font-weight: 700;
     line-height: 1.45; color: var(--text);
   }
 
@@ -178,7 +195,7 @@
   .choice-btn {
     display: flex; align-items: center; gap: 14px;
     padding: 15px 18px; border: 1.5px solid var(--border); border-radius: 14px;
-    background: var(--bg-card); font-size: 15px; font-family: 'Noto Sans KR', sans-serif; font-weight: 400;
+    background: var(--bg-card); font-size: 15px; font-family: 'Pretendard', sans-serif; font-weight: 400;
     color: var(--text); cursor: pointer; text-align: left; transition: all 0.15s;
   }
   .choice-btn:hover { border-color: var(--teal); background: var(--teal-pale); }
@@ -213,7 +230,7 @@
     color: var(--muted); margin-bottom: 6px; text-transform: uppercase;
   }
   .result-name {
-    text-align: center; font-family: 'Nanum Myeongjo', serif;
+    text-align: center; font-family: 'NMMFClassic', serif;
     font-size: clamp(28px, 7vw, 36px);
     font-weight: 700; margin-bottom: 28px; line-height: 1.2;
     color: var(--text); letter-spacing: -0.01em;
@@ -282,7 +299,7 @@
   .action-row { display: flex; gap: 10px; margin-bottom: 16px; }
   .btn-action {
     flex: 1; padding: 14px 10px; border: 1.5px solid var(--border); border-radius: 14px;
-    background: var(--bg-card); font-size: 14px; font-family: 'Noto Sans KR', sans-serif; font-weight: 500;
+    background: var(--bg-card); font-size: 14px; font-family: 'Pretendard', sans-serif; font-weight: 500;
     cursor: pointer; transition: all 0.15s; color: var(--sub);
     display: flex; align-items: center; justify-content: center; gap: 6px;
   }
@@ -294,7 +311,7 @@
   .footer-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 12px; }
   .btn-coffee, .btn-kakao, .btn-luck {
     display: inline-flex; align-items: center; gap: 5px; padding: 9px 16px;
-    border-radius: 10px; font-size: 13px; font-weight: 500; font-family: 'Noto Sans KR', sans-serif;
+    border-radius: 10px; font-size: 13px; font-weight: 500; font-family: 'Pretendard', sans-serif;
     cursor: pointer; text-decoration: none; transition: background 0.15s;
   }
   .btn-coffee { background: var(--bg-subtle); color: var(--sub); border: 1px solid var(--border); }
