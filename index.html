@@ -254,9 +254,12 @@
 
   .result-emoji { display: block; text-align: center; font-size: 68px; margin-bottom: 14px; }
   .result-eyebrow {
-    text-align: center; font-size: 11px; font-weight: 500;
-    letter-spacing: 0.12em; color: var(--hint); margin-bottom: 6px; text-transform: uppercase;
+    display: inline-block; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; color: var(--brown);
+    background: var(--lime); padding: 4px 14px; border-radius: 99px;
+    margin-bottom: 14px; text-transform: uppercase;
   }
+  .result-eyebrow-wrap { text-align: center; margin-bottom: 0; }
   .result-name {
     text-align: center; font-family: 'NMMFClassic', serif;
     font-size: clamp(28px, 7vw, 36px);
@@ -288,29 +291,18 @@
   .trait  { padding: 6px 14px; border-radius: 99px; font-size: 12px; font-weight: 500; }
 
   .comfort-box {
-    border-radius: 12px; padding: 18px 20px;
-    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px 22px;
+    background: var(--brown); border: none;
   }
-  .comfort-text { font-size: 14px; line-height: 1.85; color: var(--sub); font-style: italic; }
+  .comfort-text { font-size: 14px; line-height: 1.85; color: var(--lime); font-style: italic; }
 
   /* ━━ 아케타입 특성 컬러 (상단 라인 제거, trait 색상만 유지) ━━ */
-  .arc-royal    .trait { background: #F7F5EC; color: #7A6E38; }
-  .arc-royal    .comfort-box { border-color: #DDD8B8; }
-
-  .arc-scholar  .trait { background: #EEEFF8; color: #4A5298; }
-  .arc-scholar  .comfort-box { border-color: #CACFE8; }
-
-  .arc-wanderer .trait { background: #EEF2EB; color: #527048; }
-  .arc-wanderer .comfort-box { border-color: #CAD4C6; }
-
-  .arc-artisan  .trait { background: #F6F0E6; color: #7A5C28; }
-  .arc-artisan  .comfort-box { border-color: #DCCFB0; }
-
-  .arc-mystic   .trait { background: #EEF1EB; color: #586850; }
-  .arc-mystic   .comfort-box { border-color: #CDD6C6; }
-
+  .arc-royal     .trait { background: #F7F5EC; color: #7A6E38; }
+  .arc-scholar   .trait { background: #EEEFF8; color: #4A5298; }
+  .arc-wanderer  .trait { background: #EEF2EB; color: #527048; }
+  .arc-artisan   .trait { background: #F6F0E6; color: #7A5C28; }
+  .arc-mystic    .trait { background: #EEF1EB; color: #586850; }
   .arc-trickster .trait { background: #F8EDEE; color: #885868; }
-  .arc-trickster .comfort-box { border-color: #E4CACF; }
 
   /* ━━ 액션 버튼 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
   .action-row { display: flex; gap: 10px; margin-bottom: 16px; }
@@ -323,6 +315,8 @@
     display: flex; align-items: center; justify-content: center; gap: 6px;
   }
   .btn-action:hover { background: var(--surface); color: var(--text); }
+  .btn-action.btn-action-primary { background: var(--lime); color: var(--brown); border-color: var(--lime); font-weight: 700; }
+  .btn-action.btn-action-primary:hover { background: var(--lime-hv); border-color: var(--lime-hv); }
   .btn-action.success {
     background: rgba(237,251,166,0.45); border-color: var(--brown); color: var(--brown);
   }
@@ -457,7 +451,7 @@
     <div class="result-card" id="r-card">
       <div class="result-accent"></div>
       <span class="result-emoji" id="r-emoji"></span>
-      <div class="result-eyebrow">당신의 전생 직업</div>
+      <div class="result-eyebrow-wrap"><span class="result-eyebrow">당신의 전생 직업</span></div>
       <div class="result-name" id="r-name"></div>
       <div class="element-badge" id="r-element-badge">
         <span class="element-badge-emoji" id="r-el-emoji"></span>
@@ -477,7 +471,7 @@
     </div>
     <div class="action-row">
       <button class="btn-action" id="btn-copy" onclick="copyResult()">📋 결과 복사</button>
-      <button class="btn-action" onclick="retry()">🔄 다시 하기</button>
+      <button class="btn-action btn-action-primary" onclick="retry()">🔄 다시 하기</button>
     </div>
     <div class="footer-block">
       <div class="footer-btns">
