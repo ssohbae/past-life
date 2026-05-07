@@ -470,8 +470,8 @@
       </div>
     </div>
     <div class="action-row">
-      <button class="btn-action" id="btn-copy" onclick="copyResult()">📋 결과 복사</button>
-      <button class="btn-action btn-action-primary" onclick="retry()">🔄 다시 하기</button>
+      <button class="btn-action btn-action-primary" id="btn-copy" onclick="copyResult()">🔗 공유하기</button>
+      <button class="btn-action" onclick="retry()">🔄 다시 하기</button>
     </div>
     <div class="footer-block">
       <div class="footer-btns">
@@ -849,6 +849,7 @@ let dobStr = '';
 let calType = 'solar';
 let answers = [];
 let currentQ = 0;
+let pickPending = null;
 
 // ────────────────────────────────────────────────
 // 초기화
@@ -967,6 +968,8 @@ function startQuiz() {
 }
 
 function renderQ() {
+  if (pickPending !== null) { clearTimeout(pickPending); pickPending = null; }
+
   const q = QUESTIONS[currentQ];
   const total = QUESTIONS.length;
   const pct = (currentQ / total) * 100;
@@ -993,10 +996,12 @@ function renderQ() {
 }
 
 function pick(choiceIdx, btn) {
-  if (btn.classList.contains('selected')) return;
+  if (pickPending !== null || btn.classList.contains('selected')) return;
   document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
-  setTimeout(() => {
+  document.querySelectorAll('.choice-btn').forEach(b => { b.onclick = null; });
+  pickPending = setTimeout(() => {
+    pickPending = null;
     answers.push(choiceIdx);
     currentQ++;
     if (currentQ >= QUESTIONS.length) runLoading();
@@ -1096,7 +1101,7 @@ ${traits}
     const btn = document.getElementById('btn-copy');
     btn.classList.add('success');
     btn.textContent = '✓ 복사됐어요!';
-    setTimeout(() => { btn.classList.remove('success'); btn.innerHTML = '📋 결과 복사'; }, 2000);
+    setTimeout(() => { btn.classList.remove('success'); btn.innerHTML = '🔗 공유하기'; }, 2000);
   });
 }
 
