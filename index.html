@@ -986,15 +986,19 @@ function renderQ() {
   if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
 
   const wrap = document.getElementById('choices');
-  wrap.innerHTML = '';
+  while (wrap.firstChild) wrap.removeChild(wrap.firstChild);
+
   q.choices.forEach((c, i) => {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'choice-btn';
+    btn.classList.remove('selected');
     btn.innerHTML = `<span class="choice-emoji">${c.e}</span>${c.label}`;
     btn.onclick = (e) => { e.preventDefault(); pick(i, btn); };
     wrap.appendChild(btn);
   });
+
+  wrap.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
 
   const backBtn = document.getElementById('quiz-back');
   backBtn.onclick = currentQ === 0
@@ -1004,9 +1008,8 @@ function renderQ() {
 
 function pick(choiceIdx, btn) {
   if (pickPending !== null || btn.classList.contains('selected')) return;
-  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('choices').querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
-  document.querySelectorAll('.choice-btn').forEach(b => { b.onclick = null; });
   pickPending = setTimeout(() => {
     pickPending = null;
     answers.push(choiceIdx);
