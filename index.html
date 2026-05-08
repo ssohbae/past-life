@@ -228,7 +228,9 @@
     user-select: none;
     outline: none;
   }
-  .choice-btn:hover   { border-color: var(--brown); background: rgba(237,251,166,0.15); }
+  @media (hover: hover) {
+    .choice-btn:hover { border-color: var(--brown); background: rgba(237,251,166,0.15); }
+  }
   .choice-btn.selected {
     border-color: var(--brown); background: var(--lime);
     color: var(--brown); font-weight: 600;
